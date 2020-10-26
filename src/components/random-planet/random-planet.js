@@ -7,14 +7,12 @@ import ErrorIndicator from '../error-indicator';
 import './random-planet.css';
 
 export default class RandomPlanet extends Component {
-  constructor() {
-    super();
-    this.updatePlanet();
-    
-  }
-  
   swapiService = new swapiService();
   
+  componentDidMount() {
+    this.updatePlanet();
+  }
+
   state = {
     planet: {},
     loading: true
