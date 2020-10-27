@@ -12,10 +12,10 @@ export default class RandomPlanet extends Component {
   componentDidMount() {
     this.updatePlanet();
   }
-
   state = {
     planet: {},
-    loading: true
+    loading: true,
+    error: false
   }
   onPlanetLoaded = (planet) => {
     this.setState({

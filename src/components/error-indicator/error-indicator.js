@@ -12,7 +12,7 @@ const ErrorIndicator = () => {
         Something has gone terribly wrong
       </span>
       <span>
-        (but we already sent droids to fix it)
+        (but we've already sent droids to fix it)
       </span>
     </div>
   );
