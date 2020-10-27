@@ -1,7 +1,11 @@
-.person-details {
+.item-details {
   display: flex;
   flex-direction: row;
   padding: 1rem;
+}
+.item-details img {
+  width: 325px;
+  height: 380px;
 }
 
 .person-details .person-image {

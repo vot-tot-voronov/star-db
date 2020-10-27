@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
-import swapiService from '../../services/swapi-service';
 import Spinner from '../spinner';
 import ErrorIndicator from '../error-indicator';
-import './person-details.css';
+import './item-details.css';
 
-export default class PersonDetails extends Component {
+export default class ItemDetails extends Component {
 
-swapiService = new swapiService();
 state = {
-  person: {},
+  item: {},
   loading: true,
-  error: false
+  error: false,
+  image: null
 }
 componentDidMount() {
-  this.updatePerson();
+  this.updateItem();
 }
-onPersonLoaded = (person) => {
+onItemLoaded = (item) => {
+  const { getImageUrl } = this.props;
   this.setState({
-    person,
+    item,
     loading: false,
-    error: false
+    error: false,
+    image: getImageUrl(item)
   });
 }
 onError = () => {
@@ -28,34 +29,34 @@ onError = () => {
     loading: false
   });
 }
-updatePerson() {
-  const { personId } = this.props;
-  if (!personId) {
+updateItem() {
+  const { itemId, getData } = this.props;
+  if (!itemId) {
     return;
   }
-  this.swapiService.getPerson(personId)
-    .then(this.onPersonLoaded)
+  getData(itemId)
+    .then(this.onItemLoaded)
     .catch(this.onError);
 }
 
 componentDidUpdate(prevProps) {
-  if (this.props.personId !== prevProps.personId) {
-    this.updatePerson();
+  if (this.props.itemId !== prevProps.itemId) {
+    this.updateItem();
   }
 }
 
   render() {
-    if (!this.state.person) return <span>Select some person</span>
+    if (!this.state.item) return <span>Select some person</span>
 
-    const {person, loading, error} = this.state;
+    const {item, loading, error, image} = this.state;
 
     const errorMessage = error ? <ErrorIndicator /> : null;
     const spinner = loading ? <Spinner /> : null;
     const hasData = !(errorMessage || spinner);
-    const content = hasData ? <PersonView person={person}/> : null;
+    const content = hasData ? <PersonView person={item} image={image}/> : null;
 
     return (
-      <div className="person-details card">
+      <div className="item-details card">
         {spinner}
         {errorMessage}
         {content}
@@ -64,26 +65,27 @@ componentDidUpdate(prevProps) {
   }
 }
 
-const PersonView = ({ person }) => {
+const PersonView = ({ person, image }) => {
+
   const { id, name, gender,
     birthYear, eyeColor } = person;
   return (
     <React.Fragment>
         <img className="person-image" alt="Person's img"
-          src={`https://starwars-visualguide.com/assets/img/characters/${id}.jpg`} />
+          src={image} />
         <div className="card-body">
           <h4>{name}</h4>
           <ul className="list-group list-group-flush">
             <li className="list-group-item">
-              <span className="term">Gender</span>
+              <span className="term">Gender </span>
               <span>{gender}</span>
             </li>
             <li className="list-group-item">
-              <span className="term">Birth Year</span>
+              <span className="term">Birth Year </span>
               <span>{birthYear}</span>
             </li>
             <li className="list-group-item">
-              <span className="term">Eye Color</span>
+              <span className="term">Eye Color </span>
               <span>{eyeColor}</span>
             </li>
           </ul>
