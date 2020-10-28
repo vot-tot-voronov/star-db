@@ -3,8 +3,22 @@ import Spinner from '../spinner';
 import ErrorIndicator from '../error-indicator';
 import './item-details.css';
 
-export default class ItemDetails extends Component {
+const Record = ({item, field, label}) => {
+  return (
+    <li className="list-group-item">
+      <span className="term">{label} </span>
+      <span>{item[field]}</span>
+    </li>
+  );
+}
 
+export {
+  Record
+};
+
+
+
+export default class ItemDetails extends Component {
 state = {
   item: {},
   loading: true,
@@ -53,7 +67,7 @@ componentDidUpdate(prevProps) {
     const errorMessage = error ? <ErrorIndicator /> : null;
     const spinner = loading ? <Spinner /> : null;
     const hasData = !(errorMessage || spinner);
-    const content = hasData ? <PersonView person={item} image={image}/> : null;
+    const content = hasData ? <PersonView item={item} image={image} children={this.props.children}/> : null;
 
     return (
       <div className="item-details card">
@@ -65,10 +79,10 @@ componentDidUpdate(prevProps) {
   }
 }
 
-const PersonView = ({ person, image }) => {
+const PersonView = ({ item, image, children }) => {
 
   const { id, name, gender,
-    birthYear, eyeColor } = person;
+    birthYear, eyeColor } = item;
   return (
     <React.Fragment>
         <img className="person-image" alt="Person's img"
@@ -76,18 +90,11 @@ const PersonView = ({ person, image }) => {
         <div className="card-body">
           <h4>{name}</h4>
           <ul className="list-group list-group-flush">
-            <li className="list-group-item">
-              <span className="term">Gender </span>
-              <span>{gender}</span>
-            </li>
-            <li className="list-group-item">
-              <span className="term">Birth Year </span>
-              <span>{birthYear}</span>
-            </li>
-            <li className="list-group-item">
-              <span className="term">Eye Color </span>
-              <span>{eyeColor}</span>
-            </li>
+            {
+              React.Children.map(children, (child) => {
+                return React.cloneElement(child, { item })
+              })
+            }
           </ul>
         </div>
     </React.Fragment>

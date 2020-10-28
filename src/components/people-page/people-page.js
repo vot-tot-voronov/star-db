@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ItemList from '../item-list';
 import ItemDetails from '../item-details';
+import { Record } from '../item-details/item-details';
 import Row from '../row';
 import swapiService from '../../services/swapi-service';
 import ErrorBoundry from '../error-boundry';
@@ -29,7 +30,10 @@ export default class PeoplePage extends Component {
             <ErrorBoundry>
                 <ItemDetails itemId={this.state.selectedPerson} 
                     getData={this.swapiService.getPerson}
-                    getImageUrl={this.swapiService.getPersonImage}/>
+                    getImageUrl={this.swapiService.getPersonImage}>
+                    <Record field="gender" label="Gender" />
+                    <Record field="eyeColor" label="Eye Color" />
+                </ItemDetails>
             </ErrorBoundry>
         );
         return(
