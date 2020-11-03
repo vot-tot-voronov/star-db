@@ -9,10 +9,10 @@ const ErrorIndicator = () => {
       <img src={icon} alt="error icon"/>
       <span className="boom">BOOM!</span>
       <span>
-        Something has gone terribly wrong
+        something has gone terribly wrong
       </span>
       <span>
-        (but we've already sent droids to fix it)
+        (but we already sent droids to fix it)
       </span>
     </div>
   );
